@@ -1,0 +1,50 @@
+server:
+  addr: ":8080"
+  read_timeout: 10s
+  read_header_timeout: 5s
+  write_timeout: 30s
+  idle_timeout: 120s
+  max_body_bytes: 1048576        # 1 MiB
+
+auth:
+  jwt_issuer: "https://auth.miapp.com"
+  jwt_audience: "api.miapp.com"
+
+rate_limit:
+  default_rps: 20.0
+  default_burst: 40
+
+upstreams:
+  users:
+    protocol: "grpc"
+    address: "localhost:50051"
+    timeout: 3s
+  orders:
+    protocol: "grpc"
+    address: "localhost:50052"
+    timeout: 5s
+  payments:
+    protocol: "http"
+    address: "http://localhost:8081"
+    timeout: 8s
+
+routes:
+  - method: "GET"
+    path: "/api/v1/users/{id}"
+    upstream: "users"
+    auth: "required"
+  - method: "POST"
+    path: "/api/v1/auth/login"
+    upstream: "users"
+    auth: "none"
+    rate_limit:
+      rps: 3.0
+      burst: 5
+  - method: "POST"
+    path: "/api/v1/orders"
+    upstream: "orders"
+    auth: "required"
+  - method: "GET"
+    path: "/api/v1/payments/{id}"
+    upstream: "payments"
+    auth: "required"

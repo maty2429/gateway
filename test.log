@@ -1,0 +1,765 @@
+=== RUN   TestGatewayIntegration
+2026/07/06 11:39:28 INFO Loaded JWT RSA Public Key from file path=../configs/jwt_public.pem
+=== RUN   TestGatewayIntegration/protected_route_auth_missing
+2026/07/06 11:39:28 INFO Request processed request_id=0172069eababe232cb0be287dac216ef method=GET path=/api/v1/users/123 status=401 bytes_written=164 latency_ms=0.031 remote_ip=127.0.0.1:60788 user_id=""
+=== RUN   TestGatewayIntegration/grpc_user_retrieval_success
+runtime: goroutine stack exceeds 1000000000-byte limit
+runtime: sp=0x13542f9f0390 stack=[0x13542f9f0000, 0x13544f9f0000]
+fatal error: stack overflow
+
+runtime stack:
+runtime.throw({0xc0483c?, 0x422ea5?})
+	/usr/local/go/src/runtime/panic.go:1229 +0x48 fp=0x13540f697e98 sp=0x13540f697e68 pc=0x48de88
+runtime.newstack()
+	/usr/local/go/src/runtime/stack.go:1178 +0x5fd fp=0x13540f697fc8 sp=0x13540f697e98 pc=0x47157d
+runtime.morestack()
+	/usr/local/go/src/runtime/asm_amd64.s:681 +0x7d fp=0x13540f697fd0 sp=0x13540f697fc8 pc=0x49419d
+
+goroutine 86 gp=0x13540f908000 m=4 mp=0x13540f680008 [running]:
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80?, 0x13540f9143e0?})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:139 +0xb7 fp=0x13542f9f03a0 sp=0x13542f9f0398 pc=0x877f37
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f03c0 sp=0x13542f9f03a0 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f03f8 sp=0x13542f9f03c0 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0418 sp=0x13542f9f03f8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0450 sp=0x13542f9f0418 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0470 sp=0x13542f9f0450 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f04a8 sp=0x13542f9f0470 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f04c8 sp=0x13542f9f04a8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0500 sp=0x13542f9f04c8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0520 sp=0x13542f9f0500 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0558 sp=0x13542f9f0520 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0578 sp=0x13542f9f0558 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f05b0 sp=0x13542f9f0578 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f05d0 sp=0x13542f9f05b0 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0608 sp=0x13542f9f05d0 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0628 sp=0x13542f9f0608 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0660 sp=0x13542f9f0628 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0680 sp=0x13542f9f0660 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f06b8 sp=0x13542f9f0680 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f06d8 sp=0x13542f9f06b8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0710 sp=0x13542f9f06d8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0730 sp=0x13542f9f0710 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0768 sp=0x13542f9f0730 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0788 sp=0x13542f9f0768 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f07c0 sp=0x13542f9f0788 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f07e0 sp=0x13542f9f07c0 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0818 sp=0x13542f9f07e0 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0838 sp=0x13542f9f0818 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0870 sp=0x13542f9f0838 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0890 sp=0x13542f9f0870 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f08c8 sp=0x13542f9f0890 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f08e8 sp=0x13542f9f08c8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0920 sp=0x13542f9f08e8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0940 sp=0x13542f9f0920 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0978 sp=0x13542f9f0940 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0998 sp=0x13542f9f0978 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f09d0 sp=0x13542f9f0998 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f09f0 sp=0x13542f9f09d0 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0a28 sp=0x13542f9f09f0 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0a48 sp=0x13542f9f0a28 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0a80 sp=0x13542f9f0a48 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0aa0 sp=0x13542f9f0a80 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0ad8 sp=0x13542f9f0aa0 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0af8 sp=0x13542f9f0ad8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0b30 sp=0x13542f9f0af8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0b50 sp=0x13542f9f0b30 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0b88 sp=0x13542f9f0b50 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0ba8 sp=0x13542f9f0b88 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13542f9f0be0 sp=0x13542f9f0ba8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13542f9f0c00 sp=0x13542f9f0be0 pc=0xa055fd
+...12201417 frames elided...
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eeab8 sp=0x13544f9eea98 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eeaf0 sp=0x13544f9eeab8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eeb10 sp=0x13544f9eeaf0 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eeb48 sp=0x13544f9eeb10 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eeb68 sp=0x13544f9eeb48 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eeba0 sp=0x13544f9eeb68 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eebc0 sp=0x13544f9eeba0 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eebf8 sp=0x13544f9eebc0 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eec18 sp=0x13544f9eebf8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eec50 sp=0x13544f9eec18 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eec70 sp=0x13544f9eec50 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eeca8 sp=0x13544f9eec70 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eecc8 sp=0x13544f9eeca8 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eed00 sp=0x13544f9eecc8 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0xb73b80?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eed20 sp=0x13544f9eed00 pc=0xa055fd
+google.golang.org/protobuf/internal/impl.Export.MessageOf({}, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/internal/impl/api_export.go:144 +0x98 fp=0x13544f9eed58 sp=0x13544f9eed20 pc=0x877f18
+apigateway/proto/users.(*GetUserRequest).ProtoReflect(0x13540f9143e0?)
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users.pb.go:23 +0x1d fp=0x13544f9eed78 sp=0x13544f9eed58 pc=0xa055fd
+google.golang.org/protobuf/proto.MarshalOptions.Size({{}, 0x80?, 0x3b?, 0xb7?}, {0x70b30c5242e8?, 0x13540f9143e0?})
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/proto/size.go:34 +0x32 fp=0x13544f9eeda8 sp=0x13544f9eed78 pc=0x853f32
+google.golang.org/protobuf/proto.Size(...)
+	/home/matias/go/pkg/mod/google.golang.org/protobuf@v1.36.11/proto/size.go:20
+google.golang.org/grpc/encoding/proto.(*codecV2).Marshal(0x13540f7dcec8?, {0xb73b80?, 0x13540f9143e0?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/encoding/proto/proto.go:51 +0x7a fp=0x13544f9eee70 sp=0x13544f9eeda8 pc=0x984bba
+google.golang.org/grpc.encode({0x70b30c524248?, 0x1243a60?}, {0xb73b80?, 0x13540f9143e0?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/rpc_util.go:818 +0x4a fp=0x13544f9eeef0 sp=0x13544f9eee70 pc=0x9e6f8a
+google.golang.org/grpc.prepareMsg({0xb73b80?, 0x13540f9143e0?}, {0x70b30c524248?, 0x1243a60?}, {0x0, 0x0}, {0x0, 0x0}, {0xc4c700, 0x13540f5503c0})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/stream.go:1893 +0xe5 fp=0x13544f9eef88 sp=0x13544f9eeef0 pc=0xa033a5
+google.golang.org/grpc.(*clientStream).SendMsg(0x13540f940360, {0xb73b80, 0x13540f9143e0})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/stream.go:958 +0xf1 fp=0x13544f9ef180 sp=0x13544f9eef88 pc=0x9fbdb1
+google.golang.org/grpc.invoke({0xc4e960?, 0x13540f904960?}, {0xc0f182?, 0x13540f889248?}, {0xb73b80, 0x13540f9143e0}, {0xb93280, 0x13540f904990}, 0xb6c180?, {0x0, ...})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/call.go:70 +0x99 fp=0x13544f9ef1e8 sp=0x13544f9ef180 pc=0x9d7dd9
+google.golang.org/grpc.(*ClientConn).Invoke(0x13540f738c08, {0xc4e960?, 0x13540f904960?}, {0xc0f182?, 0x13540f904930?}, {0xb73b80?, 0x13540f9143e0?}, {0xb93280?, 0x13540f904990?}, {0x0, ...})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/call.go:37 +0x232 fp=0x13544f9ef280 sp=0x13544f9ef1e8 pc=0x9d7cd2
+apigateway/proto/users.(*userServiceClient).GetUser(0x13540f567b90, {0xc4e960, 0x13540f904960}, 0x13540f9143e0, {0x0, 0x0, 0x0})
+	/mnt/c/Users/matia/Desktop/P/gateway/proto/users/users_grpc.pb.go:25 +0xc8 fp=0x13544f9ef2f8 sp=0x13544f9ef280 pc=0xa05aa8
+apigateway/internal/proxy.(*GRPCProxy).HandleGetUser(0x13540f52cf60, {0xc4d3e0, 0x13540f92c100}, 0x13540f950780)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/proxy/grpc.go:176 +0x1df fp=0x13544f9ef3f8 sp=0x13544f9ef2f8 pc=0xa0725f
+apigateway/internal/proxy.(*GRPCProxy).HandleGetUser-fm({0xc4d3e0?, 0x13540f92c100?}, 0x0?)
+	<autogenerated>:1 +0x2d fp=0x13544f9ef428 sp=0x13544f9ef3f8 pc=0xa0ac6d
+net/http.HandlerFunc.ServeHTTP(0x13540f950640?, {0xc4d3e0?, 0x13540f92c100?}, 0xc28b10ec07718bb9?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9ef450 sp=0x13544f9ef428 pc=0x7b31c9
+apigateway/internal/router.New.New.Timeout.func5.func6({0xc4d3e0, 0x13540f92c100}, 0x13540f950640)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/timeout.go:21 +0xbf fp=0x13544f9ef4a8 sp=0x13544f9ef450 pc=0xa09fbf
+net/http.HandlerFunc.ServeHTTP(0x13540f916280?, {0xc4d3e0?, 0x13540f92c100?}, 0xc?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9ef4d0 sp=0x13544f9ef4a8 pc=0x7b31c9
+apigateway/internal/router.New.(*RateLimiter).Limit.func10({0xc4d3e0, 0x13540f92c100}, 0x13540f950640)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/ratelimit.go:99 +0x266 fp=0x13544f9ef560 sp=0x13544f9ef4d0 pc=0xa09a46
+net/http.HandlerFunc.ServeHTTP(0x13540f950500?, {0xc4d3e0?, 0x13540f92c100?}, 0xc447b0?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9ef588 sp=0x13544f9ef560 pc=0x7b31c9
+apigateway/internal/router.New.(*AuthMiddleware).Authenticate.func11({0xc4d3e0, 0x13540f92c100}, 0x13540f950500)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/auth.go:220 +0x4e7 fp=0x13544f9ef648 sp=0x13544f9ef588 pc=0xa09687
+net/http.HandlerFunc.ServeHTTP(0x13540f64c0c0?, {0xc4d3e0?, 0x13540f92c100?}, 0x73faff?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9ef670 sp=0x13544f9ef648 pc=0x7b31c9
+net/http.(*ServeMux).ServeHTTP(0x13540f904750?, {0xc4d3e0, 0x13540f92c100}, 0x13540f950500)
+	/usr/local/go/src/net/http/server.go:2828 +0x1c7 fp=0x13544f9ef6c0 sp=0x13544f9ef670 pc=0x7b4fc7
+apigateway/internal/middleware.CORS.func1({0xc4d3e0, 0x13540f92c100}, 0x13540f950500)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/cors.go:24 +0x44d fp=0x13544f9ef750 sp=0x13544f9ef6c0 pc=0x90860d
+net/http.HandlerFunc.ServeHTTP(0xbfdad7?, {0xc4d3e0?, 0x13540f92c100?}, 0x6?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9ef778 sp=0x13544f9ef750 pc=0x7b31c9
+apigateway/internal/middleware.SecurityHeaders.func1({0xc4d3e0, 0x13540f92c100}, 0x13540f950500)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/security.go:24 +0x4c7 fp=0x13544f9ef808 sp=0x13544f9ef778 pc=0x909d87
+net/http.HandlerFunc.ServeHTTP(0x585f05?, {0xc4d3e0?, 0x13540f92c100?}, 0x13540f7b5868?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9ef830 sp=0x13544f9ef808 pc=0x7b31c9
+apigateway/internal/middleware.Logging.func1({0xc4d350, 0x13540f9301e0}, 0x13540f950500)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/logging.go:40 +0xd5 fp=0x13544f9ef9e0 sp=0x13544f9ef830 pc=0x908895
+net/http.HandlerFunc.ServeHTTP(0xba4300?, {0xc4d350?, 0x13540f9301e0?}, 0xc?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9efa08 sp=0x13544f9ef9e0 pc=0x7b31c9
+apigateway/internal/middleware.RequestID.func1({0xc4d350, 0x13540f9301e0}, 0x13540f9503c0)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/requestid.go:40 +0x2b0 fp=0x13544f9efab0 sp=0x13544f9efa08 pc=0x9097d0
+net/http.HandlerFunc.ServeHTTP(0x13540f7b5b08?, {0xc4d350?, 0x13540f9301e0?}, 0x494072?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9efad8 sp=0x13544f9efab0 pc=0x7b31c9
+apigateway/internal/middleware.Recovery.func1({0xc4d350?, 0x13540f9301e0?}, 0x0?)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/recovery.go:31 +0x6c fp=0x13544f9efb38 sp=0x13544f9efad8 pc=0x90912c
+net/http.HandlerFunc.ServeHTTP(0x48aa99?, {0xc4d350?, 0x13540f9301e0?}, 0x13540f7b5b68?)
+	/usr/local/go/src/net/http/server.go:2286 +0x29 fp=0x13544f9efb60 sp=0x13544f9efb38 pc=0x7b31c9
+net/http.serverHandler.ServeHTTP({0x13540f934140?}, {0xc4d350?, 0x13540f9301e0?}, 0x1?)
+	/usr/local/go/src/net/http/server.go:3311 +0x8e fp=0x13544f9efb90 sp=0x13544f9efb60 pc=0x7d25ae
+net/http.(*conn).serve(0x13540f93e090, {0xc4e960, 0x13540f78c450})
+	/usr/local/go/src/net/http/server.go:2073 +0x650 fp=0x13544f9effb8 sp=0x13544f9efb90 pc=0x7b12b0
+net/http.(*Server).Serve.gowrap3()
+	/usr/local/go/src/net/http/server.go:3464 +0x1f fp=0x13544f9effe0 sp=0x13544f9effb8 pc=0x7b6e9f
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13544f9effe8 sp=0x13544f9effe0 pc=0x495ae1
+created by net/http.(*Server).Serve in goroutine 50
+	/usr/local/go/src/net/http/server.go:3464 +0x485
+
+goroutine 1 gp=0x13540f5201e0 m=nil [chan receive]:
+runtime.gopark(0x3000000c47360?, 0x300b353228420?, 0x20?, 0x84?, 0x70b35321f108?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f731990 sp=0x13540f731970 pc=0x48dfae
+runtime.chanrecv(0x13540f5ff680, 0x13540f731a77, 0x1)
+	/usr/local/go/src/runtime/chan.go:667 +0x4ae fp=0x13540f731a08 sp=0x13540f731990 pc=0x41ca2e
+runtime.chanrecv1(0x1221300?, 0xc63540?)
+	/usr/local/go/src/runtime/chan.go:509 +0x12 fp=0x13540f731a30 sp=0x13540f731a08 pc=0x41c552
+testing.(*T).Run(0x13540f552fc8, {0xc0b24f?, 0x0?}, 0xc3d798)
+	/usr/local/go/src/testing/testing.go:2109 +0x4e5 fp=0x13540f731b08 sp=0x13540f731a30 pc=0x55cda5
+testing.runTests.func1(0x13540f552fc8)
+	/usr/local/go/src/testing/testing.go:2585 +0x3e fp=0x13540f731b50 sp=0x13540f731b08 pc=0x55f1be
+testing.tRunner(0x13540f552fc8, 0x13540f731c58)
+	/usr/local/go/src/testing/testing.go:2036 +0xea fp=0x13540f731ba0 sp=0x13540f731b50 pc=0x55bd8a
+testing.runTests({0xc01723, 0xa}, {0xc088ca, 0x13}, 0x13540f52cb88, {0x120b880, 0x2, 0x2}, {0xc28b118206ed3d85, 0x8bb2dba07a, ...})
+	/usr/local/go/src/testing/testing.go:2583 +0x505 fp=0x13540f731c88 sp=0x13540f731ba0 pc=0x55f085
+testing.(*M).Run(0x13540f760460)
+	/usr/local/go/src/testing/testing.go:2443 +0x6ac fp=0x13540f731ec8 sp=0x13540f731c88 pc=0x55da0c
+main.main()
+	_testmain.go:48 +0x9b fp=0x13540f731f48 sp=0x13540f731ec8 pc=0xa0e11b
+runtime.main()
+	/usr/local/go/src/runtime/proc.go:290 +0x2d5 fp=0x13540f731fe0 sp=0x13540f731f48 pc=0x456c95
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f731fe8 sp=0x13540f731fe0 pc=0x495ae1
+
+goroutine 2 gp=0x13540f520780 m=nil [force gc (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e6fa8 sp=0x13540f5e6f88 pc=0x48dfae
+runtime.goparkunlock(...)
+	/usr/local/go/src/runtime/proc.go:468
+runtime.forcegchelper()
+	/usr/local/go/src/runtime/proc.go:375 +0xb3 fp=0x13540f5e6fe0 sp=0x13540f5e6fa8 pc=0x456fb3
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e6fe8 sp=0x13540f5e6fe0 pc=0x495ae1
+created by runtime.init.7 in goroutine 1
+	/usr/local/go/src/runtime/proc.go:363 +0x1a
+
+goroutine 3 gp=0x13540f520d20 m=nil [GC sweep wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e7788 sp=0x13540f5e7768 pc=0x48dfae
+runtime.goparkunlock(...)
+	/usr/local/go/src/runtime/proc.go:468
+runtime.bgsweep(0x13540f5fe000)
+	/usr/local/go/src/runtime/mgcsweep.go:279 +0x94 fp=0x13540f5e77c8 sp=0x13540f5e7788 pc=0x43dfb4
+runtime.gcenable.gowrap1()
+	/usr/local/go/src/runtime/mgc.go:214 +0x17 fp=0x13540f5e77e0 sp=0x13540f5e77c8 pc=0x42f3d7
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e77e8 sp=0x13540f5e77e0 pc=0x495ae1
+created by runtime.gcenable in goroutine 1
+	/usr/local/go/src/runtime/mgc.go:214 +0x66
+
+goroutine 4 gp=0x13540f520f00 m=nil [GC scavenge wait]:
+runtime.gopark(0x13540f5fe000?, 0xc400d0?, 0x1?, 0x0?, 0x13540f520f00?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e7f78 sp=0x13540f5e7f58 pc=0x48dfae
+runtime.goparkunlock(...)
+	/usr/local/go/src/runtime/proc.go:468
+runtime.(*scavengerState).park(0x1222260)
+	/usr/local/go/src/runtime/mgcscavenge.go:425 +0x49 fp=0x13540f5e7fa8 sp=0x13540f5e7f78 pc=0x43bae9
+runtime.bgscavenge(0x13540f5fe000)
+	/usr/local/go/src/runtime/mgcscavenge.go:653 +0x3c fp=0x13540f5e7fc8 sp=0x13540f5e7fa8 pc=0x43c05c
+runtime.gcenable.gowrap2()
+	/usr/local/go/src/runtime/mgc.go:215 +0x17 fp=0x13540f5e7fe0 sp=0x13540f5e7fc8 pc=0x42f397
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e7fe8 sp=0x13540f5e7fe0 pc=0x495ae1
+created by runtime.gcenable in goroutine 1
+	/usr/local/go/src/runtime/mgc.go:215 +0xa5
+
+goroutine 5 gp=0x13540f5214a0 m=nil [GOMAXPROCS updater (idle)]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e8788 sp=0x13540f5e8768 pc=0x48dfae
+runtime.goparkunlock(...)
+	/usr/local/go/src/runtime/proc.go:468
+runtime.updateMaxProcsGoroutine()
+	/usr/local/go/src/runtime/proc.go:7095 +0xe7 fp=0x13540f5e87e0 sp=0x13540f5e8788 pc=0x465587
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e87e8 sp=0x13540f5e87e0 pc=0x495ae1
+created by runtime.defaultGOMAXPROCSUpdateEnable in goroutine 1
+	/usr/local/go/src/runtime/proc.go:7083 +0x37
+
+goroutine 6 gp=0x13540f521680 m=nil [finalizer wait]:
+runtime.gopark(0x4665d5?, 0x1245440?, 0x13?, 0x0?, 0x13540f5e6670?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e6620 sp=0x13540f5e6600 pc=0x48dfae
+runtime.runFinalizers()
+	/usr/local/go/src/runtime/mfinal.go:210 +0x107 fp=0x13540f5e67e0 sp=0x13540f5e6620 pc=0x42e347
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e67e8 sp=0x13540f5e67e0 pc=0x495ae1
+created by runtime.createfing in goroutine 1
+	/usr/local/go/src/runtime/mfinal.go:172 +0x3d
+
+goroutine 7 gp=0x13540f6685a0 m=nil [cleanup wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e8f68 sp=0x13540f5e8f48 pc=0x48dfae
+runtime.goparkunlock(...)
+	/usr/local/go/src/runtime/proc.go:468
+runtime.(*cleanupQueue).dequeue(0x12226a0)
+	/usr/local/go/src/runtime/mcleanup.go:522 +0xd4 fp=0x13540f5e8fa0 sp=0x13540f5e8f68 pc=0x42a8b4
+runtime.runCleanups()
+	/usr/local/go/src/runtime/mcleanup.go:718 +0x45 fp=0x13540f5e8fe0 sp=0x13540f5e8fa0 pc=0x42af25
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e8fe8 sp=0x13540f5e8fe0 pc=0x495ae1
+created by runtime.(*cleanupQueue).createGs in goroutine 1
+	/usr/local/go/src/runtime/mcleanup.go:672 +0xa5
+
+goroutine 9 gp=0x13540f668960 m=nil [chan receive]:
+runtime.gopark(0x3000000c47360?, 0x300b30c5238e8?, 0xe8?, 0x38?, 0x70b35323bc58?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f6938e8 sp=0x13540f6938c8 pc=0x48dfae
+runtime.chanrecv(0x13540f9a4100, 0x13540f6939cf, 0x1)
+	/usr/local/go/src/runtime/chan.go:667 +0x4ae fp=0x13540f693960 sp=0x13540f6938e8 pc=0x41ca2e
+runtime.chanrecv1(0x1221300?, 0xc63540?)
+	/usr/local/go/src/runtime/chan.go:509 +0x12 fp=0x13540f693988 sp=0x13540f693960 pc=0x41c552
+testing.(*T).Run(0x13540f553208, {0xc0f940?, 0x13540f74f8f0?}, 0x13540f996040)
+	/usr/local/go/src/testing/testing.go:2109 +0x4e5 fp=0x13540f693a60 sp=0x13540f693988 pc=0x55cda5
+apigateway/internal_test.TestGatewayIntegration(0x13540f553208)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/gateway_integration_test.go:220 +0xfd3 fp=0x13540f693f70 sp=0x13540f693a60 pc=0xa0c033
+testing.tRunner(0x13540f553208, 0xc3d798)
+	/usr/local/go/src/testing/testing.go:2036 +0xea fp=0x13540f693fc0 sp=0x13540f693f70 pc=0x55bd8a
+testing.(*T).Run.gowrap1()
+	/usr/local/go/src/testing/testing.go:2101 +0x1b fp=0x13540f693fe0 sp=0x13540f693fc0 pc=0x55cf1b
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f693fe8 sp=0x13540f693fe0 pc=0x495ae1
+created by testing.(*T).Run in goroutine 1
+	/usr/local/go/src/testing/testing.go:2101 +0x4c5
+
+goroutine 11 gp=0x13540f668b40 m=nil [IO wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f701c18 sp=0x13540f701bf8 pc=0x48dfae
+runtime.netpollblock(0x13540f701c68?, 0x41a946?, 0x0?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f701c50 sp=0x13540f701c18 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353097800, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f701c70 sp=0x13540f701c50 pc=0x48d185
+internal/poll.(*pollDesc).wait(0x13540f67b780?, 0x900424b57?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f701c98 sp=0x13540f701c70 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0x13540f67b780)
+	/usr/local/go/src/internal/poll/fd_unix.go:613 +0x28c fp=0x13540f701d40 sp=0x13540f701c98 pc=0x4d828c
+net.(*netFD).accept(0x13540f67b780)
+	/usr/local/go/src/net/fd_unix.go:150 +0x29 fp=0x13540f701df8 sp=0x13540f701d40 pc=0x6345c9
+net.(*TCPListener).accept(0x13540f615e00)
+	/usr/local/go/src/net/tcpsock_posix.go:159 +0x1b fp=0x13540f701e48 sp=0x13540f701df8 pc=0x64a79b
+net.(*TCPListener).Accept(0x13540f615e00)
+	/usr/local/go/src/net/tcpsock.go:387 +0x30 fp=0x13540f701e78 sp=0x13540f701e48 pc=0x649a30
+google.golang.org/grpc.(*Server).Serve(0x13540f553448, {0xc4d170, 0x13540f615e00})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:934 +0x45c fp=0x13540f701fb8 sp=0x13540f701e78 pc=0x9ec1dc
+apigateway/internal_test.TestGatewayIntegration.func1()
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/gateway_integration_test.go:67 +0x1f fp=0x13540f701fe0 sp=0x13540f701fb8 pc=0xa0d67f
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f701fe8 sp=0x13540f701fe0 pc=0x495ae1
+created by apigateway/internal_test.TestGatewayIntegration in goroutine 9
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/gateway_integration_test.go:66 +0x14b
+
+goroutine 12 gp=0x13540f668f00 m=nil [IO wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f7b8bf0 sp=0x13540f7b8bd0 pc=0x48dfae
+runtime.netpollblock(0x48b953?, 0x41a946?, 0x0?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f7b8c28 sp=0x13540f7b8bf0 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353097600, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f7b8c48 sp=0x13540f7b8c28 pc=0x48d185
+internal/poll.(*pollDesc).wait(0x13540f67b880?, 0x370016?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f7b8c70 sp=0x13540f7b8c48 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0x13540f67b880)
+	/usr/local/go/src/internal/poll/fd_unix.go:613 +0x28c fp=0x13540f7b8d18 sp=0x13540f7b8c70 pc=0x4d828c
+net.(*netFD).accept(0x13540f67b880)
+	/usr/local/go/src/net/fd_unix.go:150 +0x29 fp=0x13540f7b8dd0 sp=0x13540f7b8d18 pc=0x6345c9
+net.(*TCPListener).accept(0x13540f615e80)
+	/usr/local/go/src/net/tcpsock_posix.go:159 +0x1b fp=0x13540f7b8e20 sp=0x13540f7b8dd0 pc=0x64a79b
+net.(*TCPListener).Accept(0x13540f615e80)
+	/usr/local/go/src/net/tcpsock.go:387 +0x30 fp=0x13540f7b8e50 sp=0x13540f7b8e20 pc=0x649a30
+net/http.(*onceCloseListener).Accept(0xc4e8b8?)
+	<autogenerated>:1 +0x1b fp=0x13540f7b8e68 sp=0x13540f7b8e50 pc=0x7dcefb
+net/http.(*Server).Serve(0x13540f518300, {0xc4d170, 0x13540f615e80})
+	/usr/local/go/src/net/http/server.go:3434 +0x30c fp=0x13540f7b8f98 sp=0x13540f7b8e68 pc=0x7b6aac
+net/http/httptest.(*Server).goServe.func1()
+	/usr/local/go/src/net/http/httptest/server.go:341 +0x55 fp=0x13540f7b8fe0 sp=0x13540f7b8f98 pc=0x7dfb75
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f7b8fe8 sp=0x13540f7b8fe0 pc=0x495ae1
+created by net/http/httptest.(*Server).goServe in goroutine 9
+	/usr/local/go/src/net/http/httptest/server.go:339 +0x65
+
+goroutine 13 gp=0x13540f6692c0 m=nil [chan receive]:
+runtime.gopark(0x48b6c5?, 0x10?, 0x40?, 0x9b?, 0x70b35323d740?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e26a8 sp=0x13540f5e2688 pc=0x48dfae
+runtime.chanrecv(0x13540f74f500, 0x13540f5e2790, 0x1)
+	/usr/local/go/src/runtime/chan.go:667 +0x4ae fp=0x13540f5e2720 sp=0x13540f5e26a8 pc=0x41ca2e
+runtime.chanrecv2(0xc4e998?, 0x13540f65f5e0?)
+	/usr/local/go/src/runtime/chan.go:514 +0x12 fp=0x13540f5e2748 sp=0x13540f5e2720 pc=0x41c572
+google.golang.org/grpc/internal/grpcsync.(*CallbackSerializer).run(0x13540f567780, {0xc4e998, 0x13540f65f5e0})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:88 +0xe5 fp=0x13540f5e27b8 sp=0x13540f5e2748 pc=0x91d0c5
+google.golang.org/grpc/internal/grpcsync.NewCallbackSerializer.gowrap1()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:52 +0x1f fp=0x13540f5e27e0 sp=0x13540f5e27b8 pc=0x91cedf
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e27e8 sp=0x13540f5e27e0 pc=0x495ae1
+created by google.golang.org/grpc/internal/grpcsync.NewCallbackSerializer in goroutine 9
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:52 +0x11a
+
+goroutine 14 gp=0x13540f6694a0 m=nil [chan receive]:
+runtime.gopark(0x13540f55d020?, 0xb?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f7afea8 sp=0x13540f7afe88 pc=0x48dfae
+runtime.chanrecv(0x13540f74f570, 0x13540f7aff90, 0x1)
+	/usr/local/go/src/runtime/chan.go:667 +0x4ae fp=0x13540f7aff20 sp=0x13540f7afea8 pc=0x41ca2e
+runtime.chanrecv2(0xc4e998?, 0x13540f65f630?)
+	/usr/local/go/src/runtime/chan.go:514 +0x12 fp=0x13540f7aff48 sp=0x13540f7aff20 pc=0x41c572
+google.golang.org/grpc/internal/grpcsync.(*CallbackSerializer).run(0x13540f5677b0, {0xc4e998, 0x13540f65f630})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:88 +0xe5 fp=0x13540f7affb8 sp=0x13540f7aff48 pc=0x91d0c5
+google.golang.org/grpc/internal/grpcsync.NewCallbackSerializer.gowrap1()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:52 +0x1f fp=0x13540f7affe0 sp=0x13540f7affb8 pc=0x91cedf
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f7affe8 sp=0x13540f7affe0 pc=0x495ae1
+created by google.golang.org/grpc/internal/grpcsync.NewCallbackSerializer in goroutine 9
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:52 +0x11a
+
+goroutine 15 gp=0x13540f669680 m=nil [chan receive]:
+runtime.gopark(0x91c046?, 0x13540f745900?, 0xc0?, 0x49?, 0x13540f65f810?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f705ea8 sp=0x13540f705e88 pc=0x48dfae
+runtime.chanrecv(0x13540f74f5e0, 0x13540f705f90, 0x1)
+	/usr/local/go/src/runtime/chan.go:667 +0x4ae fp=0x13540f705f20 sp=0x13540f705ea8 pc=0x41ca2e
+runtime.chanrecv2(0xc4e998?, 0x13540f65f680?)
+	/usr/local/go/src/runtime/chan.go:514 +0x12 fp=0x13540f705f48 sp=0x13540f705f20 pc=0x41c572
+google.golang.org/grpc/internal/grpcsync.(*CallbackSerializer).run(0x13540f5677e0, {0xc4e998, 0x13540f65f680})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:88 +0xe5 fp=0x13540f705fb8 sp=0x13540f705f48 pc=0x91d0c5
+google.golang.org/grpc/internal/grpcsync.NewCallbackSerializer.gowrap1()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:52 +0x1f fp=0x13540f705fe0 sp=0x13540f705fb8 pc=0x91cedf
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f705fe8 sp=0x13540f705fe0 pc=0x495ae1
+created by google.golang.org/grpc/internal/grpcsync.NewCallbackSerializer in goroutine 9
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/grpcsync/callback_serializer.go:52 +0x11a
+
+goroutine 49 gp=0x13540f669a40 m=nil [chan receive]:
+runtime.gopark(0x13540f71a2b0?, 0x13540f71a230?, 0x0?, 0xb8?, 0xc3de40?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f7b9e40 sp=0x13540f7b9e20 pc=0x48dfae
+runtime.chanrecv(0x13540f71a230, 0x13540f7b9f40, 0x1)
+	/usr/local/go/src/runtime/chan.go:667 +0x4ae fp=0x13540f7b9eb8 sp=0x13540f7b9e40 pc=0x41ca2e
+runtime.chanrecv2(0x45d964b800?, 0x10?)
+	/usr/local/go/src/runtime/chan.go:514 +0x12 fp=0x13540f7b9ee0 sp=0x13540f7b9eb8 pc=0x41c572
+apigateway/internal/middleware.(*RateLimiter).cleanupLoop(0x13540f838e70)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/ratelimit.go:44 +0x53 fp=0x13540f7b9fc8 sp=0x13540f7b9ee0 pc=0x908eb3
+apigateway/internal/middleware.NewRateLimiter.gowrap1()
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/ratelimit.go:37 +0x17 fp=0x13540f7b9fe0 sp=0x13540f7b9fc8 pc=0x908e37
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f7b9fe8 sp=0x13540f7b9fe0 pc=0x495ae1
+created by apigateway/internal/middleware.NewRateLimiter in goroutine 9
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/middleware/ratelimit.go:37 +0xba
+
+goroutine 50 gp=0x13540f669c20 m=nil [IO wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f7babf0 sp=0x13540f7babd0 pc=0x48dfae
+runtime.netpollblock(0x13540f7bac40?, 0x41a946?, 0x0?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f7bac28 sp=0x13540f7babf0 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353097400, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f7bac48 sp=0x13540f7bac28 pc=0x48d185
+internal/poll.(*pollDesc).wait(0x13540f67bb80?, 0x900000036?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f7bac70 sp=0x13540f7bac48 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0x13540f67bb80)
+	/usr/local/go/src/internal/poll/fd_unix.go:613 +0x28c fp=0x13540f7bad18 sp=0x13540f7bac70 pc=0x4d828c
+net.(*netFD).accept(0x13540f67bb80)
+	/usr/local/go/src/net/fd_unix.go:150 +0x29 fp=0x13540f7badd0 sp=0x13540f7bad18 pc=0x6345c9
+net.(*TCPListener).accept(0x13540f83a340)
+	/usr/local/go/src/net/tcpsock_posix.go:159 +0x1b fp=0x13540f7bae20 sp=0x13540f7badd0 pc=0x64a79b
+net.(*TCPListener).Accept(0x13540f83a340)
+	/usr/local/go/src/net/tcpsock.go:387 +0x30 fp=0x13540f7bae50 sp=0x13540f7bae20 pc=0x649a30
+net/http.(*onceCloseListener).Accept(0x13540f93e090?)
+	<autogenerated>:1 +0x1b fp=0x13540f7bae68 sp=0x13540f7bae50 pc=0x7dcefb
+net/http.(*Server).Serve(0x13540f518600, {0xc4d170, 0x13540f83a340})
+	/usr/local/go/src/net/http/server.go:3434 +0x30c fp=0x13540f7baf98 sp=0x13540f7bae68 pc=0x7b6aac
+net/http/httptest.(*Server).goServe.func1()
+	/usr/local/go/src/net/http/httptest/server.go:341 +0x55 fp=0x13540f7bafe0 sp=0x13540f7baf98 pc=0x7dfb75
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f7bafe8 sp=0x13540f7bafe0 pc=0x495ae1
+created by net/http/httptest.(*Server).goServe in goroutine 9
+	/usr/local/go/src/net/http/httptest/server.go:339 +0x65
+
+goroutine 67 gp=0x13540f8ae1e0 m=nil [select]:
+runtime.gopark(0x13540f8c4778?, 0x2?, 0x70?, 0x0?, 0x13540f8c46f4?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f8c4588 sp=0x13540f8c4568 pc=0x48dfae
+runtime.selectgo(0x13540f8c4778, 0x13540f8c46f0, 0x0?, 0x0, 0x0?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f8c46b8 sp=0x13540f8c4588 pc=0x46a405
+google.golang.org/grpc/internal/transport.(*http2Client).keepalive(0x13540f8ba008)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:1783 +0x185 fp=0x13540f8c47c8 sp=0x13540f8c46b8 pc=0x969f25
+google.golang.org/grpc/internal/transport.NewHTTP2Client.gowrap3()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:410 +0x17 fp=0x13540f8c47e0 sp=0x13540f8c47c8 pc=0x95f577
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f8c47e8 sp=0x13540f8c47e0 pc=0x495ae1
+created by google.golang.org/grpc/internal/transport.NewHTTP2Client in goroutine 16
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:410 +0x1d9d
+
+goroutine 68 gp=0x13540f8ae3c0 m=nil [IO wait]:
+runtime.gopark(0x13540f7b4b80?, 0x94743f?, 0x0?, 0x80?, 0xaca9c0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f7b4b58 sp=0x13540f7b4b38 pc=0x48dfae
+runtime.netpollblock(0x13540f8922a0?, 0xf982000?, 0x54?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f7b4b90 sp=0x13540f7b4b58 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353097200, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f7b4bb0 sp=0x13540f7b4b90 pc=0x48d185
+internal/poll.(*pollDesc).wait(0xe?, 0x13540f7b4b01?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f7b4bd8 sp=0x13540f7b4bb0 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).RawRead(0x13540f894080, 0x13540f884170)
+	/usr/local/go/src/internal/poll/fd_unix.go:710 +0x125 fp=0x13540f7b4c38 sp=0x13540f7b4bd8 pc=0x4d8e65
+net.(*rawConn).Read(0x13540f8ac018, 0x70b35323bc58?)
+	/usr/local/go/src/net/rawconn.go:44 +0x36 fp=0x13540f7b4c70 sp=0x13540f7b4c38 pc=0x645a16
+google.golang.org/grpc/internal/transport/readyreader.(*nonBlockingReader).ReadOnReady(0x13540f8a4190, 0x48b6c5?, {0xc4c430, 0x13540f8922a0})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/readyreader/ready_reader.go:114 +0xa7 fp=0x13540f7b4cc8 sp=0x13540f7b4c70 pc=0x94cc67
+google.golang.org/grpc/internal/transport/readyreader.(*bufReadyReader).Read(0x13540f8a82a0, {0x13540f8b6044, 0x9, 0x13540f720001?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/readyreader/ready_reader.go:221 +0x174 fp=0x13540f7b4d00 sp=0x13540f7b4cc8 pc=0x94cf34
+io.ReadAtLeast({0xc49980, 0x13540f8a82a0}, {0x13540f8b6044, 0x9, 0x9}, 0x9)
+	/usr/local/go/src/io/io.go:335 +0x8e fp=0x13540f7b4d48 sp=0x13540f7b4d00 pc=0x4cabae
+io.ReadFull(...)
+	/usr/local/go/src/io/io.go:354
+golang.org/x/net/http2.readFrameHeader({0x13540f8b6044, 0x9, 0x135400000000?}, {0xc49980?, 0x13540f8a82a0?})
+	/home/matias/go/pkg/mod/golang.org/x/net@v0.53.0/http2/frame.go:250 +0x65 fp=0x13540f7b4d98 sp=0x13540f7b4d48 pc=0x93c825
+golang.org/x/net/http2.(*Framer).ReadFrameHeader(0x13540f8b6000)
+	/home/matias/go/pkg/mod/golang.org/x/net@v0.53.0/http2/frame.go:513 +0x6b fp=0x13540f7b4e20 sp=0x13540f7b4d98 pc=0x93ceeb
+google.golang.org/grpc/internal/transport.(*framer).readFrame(0x13540f894100)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http_util.go:493 +0x45 fp=0x13540f7b4e60 sp=0x13540f7b4e20 pc=0x976c05
+google.golang.org/grpc/internal/transport.(*http2Client).reader(0x13540f8ba008, 0x13540f8a8310)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:1709 +0x1ba fp=0x13540f7b4fc0 sp=0x13540f7b4e60 pc=0x96973a
+google.golang.org/grpc/internal/transport.NewHTTP2Client.gowrap4()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:420 +0x1b fp=0x13540f7b4fe0 sp=0x13540f7b4fc0 pc=0x95f53b
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f7b4fe8 sp=0x13540f7b4fe0 pc=0x495ae1
+created by google.golang.org/grpc/internal/transport.NewHTTP2Client in goroutine 16
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:420 +0x1e13
+
+goroutine 82 gp=0x13540f9081e0 m=nil [select]:
+runtime.gopark(0x13540f8c0690?, 0x2?, 0xca?, 0x5e?, 0x13540f8c0664?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f8c0500 sp=0x13540f8c04e0 pc=0x48dfae
+runtime.selectgo(0x13540f8c0690, 0x13540f8c0660, 0x425f05?, 0x0, 0xb6cfe0?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f8c0630 sp=0x13540f8c0500 pc=0x46a405
+google.golang.org/grpc/internal/transport.(*controlBuffer).get(0x13540f934000, 0x1)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/controlbuf.go:420 +0x10a fp=0x13540f8c06c0 sp=0x13540f8c0630 pc=0x95530a
+google.golang.org/grpc/internal/transport.(*loopyWriter).run(0x13540f8b80a0)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/controlbuf.go:597 +0x78 fp=0x13540f8c0720 sp=0x13540f8c06c0 pc=0x955ad8
+google.golang.org/grpc/internal/transport.NewServerTransport.func3()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_server.go:350 +0xdc fp=0x13540f8c07e0 sp=0x13540f8c0720 pc=0x96c49c
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f8c07e8 sp=0x13540f8c07e0 pc=0x495ae1
+created by google.golang.org/grpc/internal/transport.NewServerTransport in goroutine 81
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_server.go:348 +0x18e7
+
+goroutine 83 gp=0x13540f9083c0 m=nil [select]:
+runtime.gopark(0x13540f8c0f50?, 0x4?, 0x70?, 0x0?, 0x13540f8c0ec0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f8c0d48 sp=0x13540f8c0d28 pc=0x48dfae
+runtime.selectgo(0x13540f8c0f50, 0x13540f8c0eb8, 0x0?, 0x0, 0x0?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f8c0e78 sp=0x13540f8c0d48 pc=0x46a405
+google.golang.org/grpc/internal/transport.(*http2Server).keepalive(0x13540f92a000)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_server.go:1211 +0x1e5 fp=0x13540f8c0fc8 sp=0x13540f8c0e78 pc=0x973805
+google.golang.org/grpc/internal/transport.NewServerTransport.gowrap1()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_server.go:371 +0x17 fp=0x13540f8c0fe0 sp=0x13540f8c0fc8 pc=0x96c397
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f8c0fe8 sp=0x13540f8c0fe0 pc=0x495ae1
+created by google.golang.org/grpc/internal/transport.NewServerTransport in goroutine 81
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_server.go:371 +0x1929
+
+goroutine 84 gp=0x13540f9085a0 m=nil [IO wait]:
+runtime.gopark(0x13540f707a98?, 0x94743f?, 0x0?, 0x80?, 0xaca9c0?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f707a70 sp=0x13540f707a50 pc=0x48dfae
+runtime.netpollblock(0x13540f8922a0?, 0xf982000?, 0x54?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f707aa8 sp=0x13540f707a70 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353097000, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f707ac8 sp=0x13540f707aa8 pc=0x48d185
+internal/poll.(*pollDesc).wait(0xf?, 0xa?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f707af0 sp=0x13540f707ac8 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).RawRead(0x13540f902000, 0x13540f914010)
+	/usr/local/go/src/internal/poll/fd_unix.go:710 +0x125 fp=0x13540f707b50 sp=0x13540f707af0 pc=0x4d8e65
+net.(*rawConn).Read(0x13540f906008, 0x13540f98a330?)
+	/usr/local/go/src/net/rawconn.go:44 +0x36 fp=0x13540f707b88 sp=0x13540f707b50 pc=0x645a16
+google.golang.org/grpc/internal/transport/readyreader.(*nonBlockingReader).ReadOnReady(0x13540f916000, 0x13540f91c000?, {0xc4c430, 0x13540f8922a0})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/readyreader/ready_reader.go:114 +0xa7 fp=0x13540f707be0 sp=0x13540f707b88 pc=0x94cc67
+google.golang.org/grpc/internal/transport/readyreader.(*bufReadyReader).Read(0x13540f918000, {0x13540f91a044, 0x9, 0x13540f99e1c0?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/readyreader/ready_reader.go:221 +0x174 fp=0x13540f707c18 sp=0x13540f707be0 pc=0x94cf34
+io.ReadAtLeast({0xc49980, 0x13540f918000}, {0x13540f91a044, 0x9, 0x9}, 0x9)
+	/usr/local/go/src/io/io.go:335 +0x8e fp=0x13540f707c60 sp=0x13540f707c18 pc=0x4cabae
+io.ReadFull(...)
+	/usr/local/go/src/io/io.go:354
+golang.org/x/net/http2.readFrameHeader({0x13540f91a044, 0x9, 0x1?}, {0xc49980?, 0x13540f918000?})
+	/home/matias/go/pkg/mod/golang.org/x/net@v0.53.0/http2/frame.go:250 +0x65 fp=0x13540f707cb0 sp=0x13540f707c60 pc=0x93c825
+golang.org/x/net/http2.(*Framer).ReadFrameHeader(0x13540f91a000)
+	/home/matias/go/pkg/mod/golang.org/x/net@v0.53.0/http2/frame.go:513 +0x6b fp=0x13540f707d38 sp=0x13540f707cb0 pc=0x93ceeb
+google.golang.org/grpc/internal/transport.(*framer).readFrame(0x13540f902080)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http_util.go:493 +0x45 fp=0x13540f707d78 sp=0x13540f707d38 pc=0x976c05
+google.golang.org/grpc/internal/transport.(*http2Server).HandleStreams(0x13540f92a000, {0xc4e960, 0x13540f904210}, 0x13540f904240)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_server.go:646 +0xff fp=0x13540f707e98 sp=0x13540f707d78 pc=0x96f13f
+google.golang.org/grpc.(*Server).serveStreams(0x13540f553448, {0xc4e8b8?, 0x1243a60?}, {0xc4eff8, 0x13540f92a000}, {0xc56c58?, 0x13540f906000?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1072 +0x368 fp=0x13540f707f70 sp=0x13540f707e98 pc=0x9ed448
+google.golang.org/grpc.(*Server).handleRawConn.func1()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1006 +0x56 fp=0x13540f707fe0 sp=0x13540f707f70 pc=0x9ecc16
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f707fe8 sp=0x13540f707fe0 pc=0x495ae1
+created by google.golang.org/grpc.(*Server).handleRawConn in goroutine 81
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1005 +0x1cb
+
+goroutine 35 gp=0x13540f7a2780 m=nil [select]:
+runtime.gopark(0x13540f90ded8?, 0x2?, 0x1?, 0xc0?, 0x13540f90deac?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f90dd48 sp=0x13540f90dd28 pc=0x48dfae
+runtime.selectgo(0x13540f90ded8, 0x13540f90dea8, 0x9760f3?, 0x0, 0x13540f90dec0?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f90de78 sp=0x13540f90dd48 pc=0x46a405
+google.golang.org/grpc/internal/transport.(*controlBuffer).get(0x13540f89a080, 0x1)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/controlbuf.go:420 +0x10a fp=0x13540f90df08 sp=0x13540f90de78 pc=0x95530a
+google.golang.org/grpc/internal/transport.(*loopyWriter).run(0x13540f91c0a0)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/controlbuf.go:597 +0x78 fp=0x13540f90df68 sp=0x13540f90df08 pc=0x955ad8
+google.golang.org/grpc/internal/transport.NewHTTP2Client.func6()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:478 +0xd2 fp=0x13540f90dfe0 sp=0x13540f90df68 pc=0x95f432
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f90dfe8 sp=0x13540f90dfe0 pc=0x495ae1
+created by google.golang.org/grpc/internal/transport.NewHTTP2Client in goroutine 16
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/http2_client.go:476 +0x23db
+
+goroutine 97 gp=0x13540f84e000 m=nil [select]:
+runtime.gopark(0x13540f7bb778?, 0x5?, 0x1?, 0xb4?, 0x13540f7bb61e?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f7bb4b0 sp=0x13540f7bb490 pc=0x48dfae
+runtime.selectgo(0x13540f7bb778, 0x13540f7bb614, 0xc05696?, 0x0, 0x13540f98c0e0?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f7bb5e0 sp=0x13540f7bb4b0 pc=0x46a405
+net/http.(*persistConn).roundTrip(0x13540f9c0140, 0x13540f9ba0a0)
+	/usr/local/go/src/net/http/transport.go:2911 +0x83d fp=0x13540f7bb810 sp=0x13540f7bb5e0 pc=0x7cebbd
+net/http.(*Transport).roundTrip(0x1213880, 0x13540f9c0000)
+	/usr/local/go/src/net/http/transport.go:704 +0xaba fp=0x13540f7bb9f0 sp=0x13540f7bb810 pc=0x7c26fa
+net/http.(*Transport).RoundTrip(0x500540f5eb501?, 0xc483e0?)
+	/usr/local/go/src/net/http/roundtrip.go:33 +0x18 fp=0x13540f7bba10 sp=0x13540f7bb9f0 pc=0x7d24d8
+net/http.send(0x13540f9c0000, {0xc483e0, 0x1213880}, {0x13540f7bbc88?, 0x490d86?, 0x0?})
+	/usr/local/go/src/net/http/client.go:264 +0x64b fp=0x13540f7bbc00 sp=0x13540f7bba10 pc=0x76358b
+net/http.(*Client).send(0x12214c0, 0x13540f9c0000, {0x42f776?, 0x1245440?, 0x0?})
+	/usr/local/go/src/net/http/client.go:185 +0x258 fp=0x13540f7bbc98 sp=0x13540f7bbc00 pc=0x762dd8
+net/http.(*Client).do(0x12214c0, 0x13540f9c0000)
+	/usr/local/go/src/net/http/client.go:733 +0x9d7 fp=0x13540f7bbe88 sp=0x13540f7bbc98 pc=0x765297
+net/http.(*Client).Do(...)
+	/usr/local/go/src/net/http/client.go:592
+apigateway/internal_test.TestGatewayIntegration.func4(0x13540f9bc008)
+	/mnt/c/Users/matia/Desktop/P/gateway/internal/gateway_integration_test.go:223 +0x193 fp=0x13540f7bbf70 sp=0x13540f7bbe88 pc=0xa0cfb3
+testing.tRunner(0x13540f9bc008, 0x13540f996040)
+	/usr/local/go/src/testing/testing.go:2036 +0xea fp=0x13540f7bbfc0 sp=0x13540f7bbf70 pc=0x55bd8a
+testing.(*T).Run.gowrap1()
+	/usr/local/go/src/testing/testing.go:2101 +0x1b fp=0x13540f7bbfe0 sp=0x13540f7bbfc0 pc=0x55cf1b
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f7bbfe8 sp=0x13540f7bbfe0 pc=0x495ae1
+created by testing.(*T).Run in goroutine 9
+	/usr/local/go/src/testing/testing.go:2101 +0x4c5
+
+goroutine 99 gp=0x13540f84e5a0 m=nil [IO wait]:
+runtime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0xb?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f911b28 sp=0x13540f911b08 pc=0x48dfae
+runtime.netpollblock(0x4b0dd8?, 0x41a946?, 0x0?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f911b60 sp=0x13540f911b28 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353096c00, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f911b80 sp=0x13540f911b60 pc=0x48d185
+internal/poll.(*pollDesc).wait(0x13540f9ca000?, 0x13540f9af000?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f911ba8 sp=0x13540f911b80 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0x13540f9ca000, {0x13540f9af000, 0x1000, 0x1000})
+	/usr/local/go/src/internal/poll/fd_unix.go:165 +0x2ae fp=0x13540f911c40 sp=0x13540f911ba8 pc=0x4d442e
+net.(*netFD).Read(0x13540f9ca000, {0x13540f9af000?, 0x90?, 0xc40418?})
+	/usr/local/go/src/net/fd_posix.go:68 +0x25 fp=0x13540f911c88 sp=0x13540f911c40 pc=0x632885
+net.(*conn).Read(0x13540f994020, {0x13540f9af000?, 0x70b35323c550?, 0x70?})
+	/usr/local/go/src/net/net.go:196 +0x45 fp=0x13540f911cd0 sp=0x13540f911c88 pc=0x641ba5
+net/http.(*persistConn).Read(0x13540f9c0140, {0x13540f9af000?, 0x70?, 0x0?})
+	/usr/local/go/src/net/http/transport.go:2174 +0x47 fp=0x13540f911d30 sp=0x13540f911cd0 pc=0x7cb6c7
+bufio.(*Reader).fill(0x13540f9cc000)
+	/usr/local/go/src/bufio/bufio.go:113 +0x103 fp=0x13540f911d68 sp=0x13540f911d30 pc=0x53ff43
+bufio.(*Reader).Peek(0x13540f9cc000, 0x1)
+	/usr/local/go/src/bufio/bufio.go:152 +0x53 fp=0x13540f911d80 sp=0x13540f911d68 pc=0x540073
+net/http.(*persistConn).readLoop(0x13540f9c0140)
+	/usr/local/go/src/net/http/transport.go:2330 +0x172 fp=0x13540f911fc8 sp=0x13540f911d80 pc=0x7cc1d2
+net/http.(*Transport).dialConn.gowrap2()
+	/usr/local/go/src/net/http/transport.go:1994 +0x17 fp=0x13540f911fe0 sp=0x13540f911fc8 pc=0x7cabf7
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f911fe8 sp=0x13540f911fe0 pc=0x495ae1
+created by net/http.(*Transport).dialConn in goroutine 98
+	/usr/local/go/src/net/http/transport.go:1994 +0x16ac
+
+goroutine 101 gp=0x13540f84e780 m=nil [select]:
+runtime.gopark(0x13540f910670?, 0x2?, 0x0?, 0x0?, 0x13540f91066c?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f9104f8 sp=0x13540f9104d8 pc=0x48dfae
+runtime.selectgo(0x13540f910670, 0x13540f910668, 0x13540f910698?, 0x0, 0x70b30c522088?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f910628 sp=0x13540f9104f8 pc=0x46a405
+google.golang.org/grpc/internal/transport.(*recvBufferReader).readMessageHeader(0x13540f9f40c8, {0x13540f98a4c0, 0x5, 0x5})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/transport.go:183 +0xa5 fp=0x13540f9106c0 sp=0x13540f910628 pc=0x979b25
+google.golang.org/grpc/internal/transport.(*recvBufferReader).ReadMessageHeader(0x13540f9f40c8, {0x13540f98a4c0?, 0x13540f92a000?, 0x13540f9f4000?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/transport.go:152 +0x77 fp=0x13540f9106f0 sp=0x13540f9106c0 pc=0x979837
+google.golang.org/grpc/internal/transport.(*transportReader).ReadMessageHeader(0x13540f9f40a8, {0x13540f98a4c0?, 0x1245440?, 0x13540f910798?})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/transport.go:463 +0x25 fp=0x13540f910728 sp=0x13540f9106f0 pc=0x97a9e5
+google.golang.org/grpc/internal/transport.(*Stream).ReadMessageHeader(0x13540f9f4000, {0x13540f98a4c0, 0x5, 0x5})
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/internal/transport/transport.go:372 +0xa9 fp=0x13540f910780 sp=0x13540f910728 pc=0x97a569
+google.golang.org/grpc.(*parser).recvMsg(0x13540f98a4b0, 0x400000)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/rpc_util.go:786 +0x3b fp=0x13540f9107f8 sp=0x13540f910780 pc=0x9e6dbb
+google.golang.org/grpc.recvAndDecompress(0x13540f98a4b0, {0xc488e0, 0x13540f9f4000}, {0x0, 0x0}, 0x400000, 0x0, {0x0, 0x0}, 0x1)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/rpc_util.go:945 +0x97 fp=0x13540f9108f0 sp=0x13540f9107f8 pc=0x9e7d77
+google.golang.org/grpc.(*Server).processUnaryRPC(0x13540f553448, {0xc4e960, 0x13540f98a480}, 0x13540f9f4000, 0x13540f75dd10, 0x120bb40, 0x0)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1399 +0xf33 fp=0x13540f910db0 sp=0x13540f9108f0 pc=0x9efad3
+google.golang.org/grpc.(*Server).handleStream(0x13540f553448, {0xc4eff8, 0x13540f92a000}, 0x13540f9f4000)
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1858 +0xae6 fp=0x13540f910f78 sp=0x13540f910db0 pc=0x9f4e46
+google.golang.org/grpc.(*Server).serveStreams.func2.1()
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1078 +0x7f fp=0x13540f910fe0 sp=0x13540f910f78 pc=0x9ed69f
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f910fe8 sp=0x13540f910fe0 pc=0x495ae1
+created by google.golang.org/grpc.(*Server).serveStreams.func2 in goroutine 84
+	/home/matias/go/pkg/mod/google.golang.org/grpc@v1.82.0/server.go:1089 +0x11d
+
+goroutine 100 gp=0x13540f9d0000 m=nil [select]:
+runtime.gopark(0x13540f90cf48?, 0x2?, 0x20?, 0xf1?, 0x13540f90cef4?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f90cd88 sp=0x13540f90cd68 pc=0x48dfae
+runtime.selectgo(0x13540f90cf48, 0x13540f90cef0, 0x13540f9a2080?, 0x0, 0x13540f98a270?, 0x1)
+	/usr/local/go/src/runtime/select.go:351 +0xaa5 fp=0x13540f90ceb8 sp=0x13540f90cd88 pc=0x46a405
+net/http.(*persistConn).writeLoop(0x13540f9c0140)
+	/usr/local/go/src/net/http/transport.go:2652 +0xe6 fp=0x13540f90cfc8 sp=0x13540f90ceb8 pc=0x7cdb86
+net/http.(*Transport).dialConn.gowrap3()
+	/usr/local/go/src/net/http/transport.go:1995 +0x17 fp=0x13540f90cfe0 sp=0x13540f90cfc8 pc=0x7cabb7
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f90cfe8 sp=0x13540f90cfe0 pc=0x495ae1
+created by net/http.(*Transport).dialConn in goroutine 98
+	/usr/local/go/src/net/http/transport.go:1995 +0x16fe
+
+goroutine 87 gp=0x13540f908780 m=nil [IO wait]:
+runtime.gopark(0xfb9cc8?, 0x26?, 0x10?, 0x0?, 0xb?)
+	/usr/local/go/src/runtime/proc.go:462 +0xce fp=0x13540f5e45d8 sp=0x13540f5e45b8 pc=0x48dfae
+runtime.netpollblock(0x4b0dd8?, 0x41a946?, 0x0?)
+	/usr/local/go/src/runtime/netpoll.go:575 +0xf7 fp=0x13540f5e4610 sp=0x13540f5e45d8 pc=0x44f7b7
+internal/poll.runtime_pollWait(0x70b353096e00, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:351 +0x85 fp=0x13540f5e4630 sp=0x13540f5e4610 pc=0x48d185
+internal/poll.(*pollDesc).wait(0x13540f902380?, 0x13540f934161?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27 fp=0x13540f5e4658 sp=0x13540f5e4630 pc=0x4d3207
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0x13540f902380, {0x13540f934161, 0x1, 0x1})
+	/usr/local/go/src/internal/poll/fd_unix.go:165 +0x2ae fp=0x13540f5e46f0 sp=0x13540f5e4658 pc=0x4d442e
+net.(*netFD).Read(0x13540f902380, {0x13540f934161?, 0x13540f9a0030?, 0x4?})
+	/usr/local/go/src/net/fd_posix.go:68 +0x25 fp=0x13540f5e4738 sp=0x13540f5e46f0 pc=0x632885
+net.(*conn).Read(0x13540f906020, {0x13540f934161?, 0x1213880?, 0x13540f9ac0b0?})
+	/usr/local/go/src/net/net.go:196 +0x45 fp=0x13540f5e4780 sp=0x13540f5e4738 pc=0x641ba5
+net/http.(*connReader).backgroundRead(0x13540f934140)
+	/usr/local/go/src/net/http/server.go:702 +0x33 fp=0x13540f5e47c8 sp=0x13540f5e4780 pc=0x7aae93
+net/http.(*connReader).startBackgroundRead.gowrap2()
+	/usr/local/go/src/net/http/server.go:698 +0x17 fp=0x13540f5e47e0 sp=0x13540f5e47c8 pc=0x7aadf7
+runtime.goexit({})
+	/usr/local/go/src/runtime/asm_amd64.s:1771 +0x1 fp=0x13540f5e47e8 sp=0x13540f5e47e0 pc=0x495ae1
+created by net/http.(*connReader).startBackgroundRead in goroutine 86
+	/usr/local/go/src/net/http/server.go:698 +0xb6
+FAIL	apigateway/internal	1.213s
+FAIL
