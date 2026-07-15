@@ -23,6 +23,7 @@ func New(
 	// Register health endpoints
 	mux.HandleFunc("GET /healthz", healthHandler.LivenessHandler())
 	mux.HandleFunc("GET /readyz", healthHandler.ReadinessHandler())
+	mux.HandleFunc("GET /.well-known/jwks.json", authMW.JWKSHandler())
 
 	// Create global rate limiter (using default config parameters)
 	globalRateLimiter := middleware.NewRateLimiter(cfg.RateLimit.DefaultRPS, cfg.RateLimit.DefaultBurst)
@@ -38,17 +39,21 @@ func New(
 
 		// 1. Establish the base handler for the destination upstream
 		if upstreamCfg.Protocol == "grpc" {
-			// Specific route mapping for gRPC service endpoints
-			switch route.Path {
-			case "/api/v1/users/{id}":
-				handler = http.HandlerFunc(grpcProxy.HandleGetUser)
-			case "/api/v1/auth/login":
-				handler = http.HandlerFunc(grpcProxy.HandleCreateUser)
-			default:
-				routeCopy := route
-				handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-					http.Error(w, "gRPC endpoint not mapped for path: "+routeCopy.Path, http.StatusNotImplemented)
-				})
+			if route.Upstream == "auth" {
+				handler = grpcProxy.HandleAuthRoute(route.Path, route.Method, cfg.Auth.CookieSecure)
+			} else {
+				// Specific route mapping for gRPC service endpoints
+				switch route.Path {
+				case "/api/v1/users/{id}":
+					handler = http.HandlerFunc(grpcProxy.HandleGetUser)
+				case "/api/v1/auth/login":
+					handler = http.HandlerFunc(grpcProxy.HandleCreateUser)
+				default:
+					routeCopy := route
+					handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+						http.Error(w, "gRPC endpoint not mapped for path: "+routeCopy.Path, http.StatusNotImplemented)
+					})
+				}
 			}
 		} else {
 			// HTTP proxy forwarding
@@ -63,7 +68,7 @@ func New(
 		}
 
 		// 2. Chain route-specific middlewares (applied from inside out)
-		
+
 		// Timeout (applied closest to the proxy handler execution)
 		timeoutDur := upstreamCfg.Timeout.Duration()
 		if timeoutDur > 0 {
@@ -86,7 +91,9 @@ func New(
 		}
 
 		// Authentication (outermost layer for the specific route handler)
-		if route.Auth != "none" { // Fail-closed: default to auth required if unspecified or required
+		if route.Auth == "limited" {
+			handler = authMW.AuthenticateLimited(handler)
+		} else if route.Auth != "none" { // Fail-closed: default to auth required if unspecified or required
 			handler = authMW.Authenticate(handler)
 		}
 

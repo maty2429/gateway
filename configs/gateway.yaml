@@ -1,50 +1,89 @@
 server:
+  environment: "development"
   addr: ":8080"
   read_timeout: 10s
   read_header_timeout: 5s
   write_timeout: 30s
   idle_timeout: 120s
-  max_body_bytes: 1048576        # 1 MiB
+  max_body_bytes: 1048576
 
 auth:
-  jwt_issuer: "https://auth.miapp.com"
-  jwt_audience: "api.miapp.com"
+  jwt_issuer: "auth-service"
+  jwt_audiences: ["mobile_app", "farmacia_web", "bodega_web", "admin_web"]
+  jwks_refresh: 5m
+  cookie_secure: false
+
+cors:
+  allowed_origins:
+    - "http://localhost:3000"
+    - "http://localhost:3001"
+    - "http://localhost:3002"
 
 rate_limit:
   default_rps: 20.0
   default_burst: 40
 
 upstreams:
-  users:
+  auth:
     protocol: "grpc"
     address: "localhost:50051"
+    timeout: 5s
+  users:
+    protocol: "grpc"
+    address: "localhost:50052"
     timeout: 3s
   orders:
     protocol: "grpc"
-    address: "localhost:50052"
+    address: "localhost:50053"
     timeout: 5s
   payments:
     protocol: "http"
-    address: "http://localhost:8081"
+    address: "http://localhost:8082"
     timeout: 8s
 
 routes:
-  - method: "GET"
-    path: "/api/v1/users/{id}"
-    upstream: "users"
-    auth: "required"
-  - method: "POST"
-    path: "/api/v1/auth/login"
-    upstream: "users"
-    auth: "none"
-    rate_limit:
-      rps: 3.0
-      burst: 5
-  - method: "POST"
-    path: "/api/v1/orders"
-    upstream: "orders"
-    auth: "required"
-  - method: "GET"
-    path: "/api/v1/payments/{id}"
-    upstream: "payments"
-    auth: "required"
+  - { method: "POST", path: "/api/v1/auth/mobile/login", upstream: "auth", auth: "none", rate_limit: { rps: 3.0, burst: 5 } }
+  - { method: "POST", path: "/api/v1/auth/login", upstream: "auth", auth: "none", rate_limit: { rps: 3.0, burst: 5 } }
+  - { method: "GET", path: "/api/v1/auth/authorize", upstream: "auth", auth: "none", rate_limit: { rps: 5.0, burst: 10 } }
+  - { method: "GET", path: "/api/v1/auth/authorization-requests/{request_id}", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/auth/authorization/login", upstream: "auth", auth: "none", rate_limit: { rps: 3.0, burst: 5 } }
+  - { method: "POST", path: "/api/v1/auth/token", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/auth/sso/logout", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/auth/refresh", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/auth/logout", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/auth/logout-all", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/auth/me", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/auth/sessions", upstream: "auth", auth: "required" }
+  - { method: "DELETE", path: "/api/v1/auth/sessions/{session_id}", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/auth/password/change", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/auth/password/change-required", upstream: "auth", auth: "limited" }
+  - { method: "POST", path: "/api/v1/auth/password/recovery/start", upstream: "auth", auth: "none", rate_limit: { rps: 1.0, burst: 3 } }
+  - { method: "POST", path: "/api/v1/auth/password/recovery/confirm", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/auth/service-token", upstream: "auth", auth: "none" }
+  - { method: "POST", path: "/api/v1/admin/users", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/admin/users", upstream: "auth", auth: "required" }
+  - { method: "PATCH", path: "/api/v1/admin/users/{user_id}", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/users/{user_id}/disable", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/users/{user_id}/enable", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/users/{user_id}/roles", upstream: "auth", auth: "required" }
+  - { method: "DELETE", path: "/api/v1/admin/users/{user_id}/roles/{project_id}/{role_id}", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/admin/security-events", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/service-accounts", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/admin/service-accounts", upstream: "auth", auth: "required" }
+  - { method: "PATCH", path: "/api/v1/admin/service-accounts/{id}", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/projects", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/admin/projects", upstream: "auth", auth: "required" }
+  - { method: "PATCH", path: "/api/v1/admin/projects/{project_id}", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/projects/{project_id}/enable", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/projects/{project_id}/disable", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/clients", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/admin/clients", upstream: "auth", auth: "required" }
+  - { method: "PATCH", path: "/api/v1/admin/clients/{client_id}", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/clients/{client_id}/enable", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/clients/{client_id}/disable", upstream: "auth", auth: "required" }
+  - { method: "POST", path: "/api/v1/admin/clients/{client_id}/rotate-secret", upstream: "auth", auth: "required" }
+  - { method: "PUT", path: "/api/v1/admin/users/{user_id}/global-roles/{role_id}", upstream: "auth", auth: "required" }
+  - { method: "DELETE", path: "/api/v1/admin/users/{user_id}/global-roles/{role_id}", upstream: "auth", auth: "required" }
+  - { method: "GET", path: "/api/v1/users/{id}", upstream: "users", auth: "required" }
+  - { method: "POST", path: "/api/v1/orders", upstream: "orders", auth: "required" }
+  - { method: "GET", path: "/api/v1/payments/{id}", upstream: "payments", auth: "required" }

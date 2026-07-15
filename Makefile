@@ -1,12 +1,12 @@
-.PHONY: all build run test clean proto
+.PHONY: all build run test clean proto docker-build
 
 all: build
 
 build:
-	go build -o bin/gateway cmd/gateway/main.go
+	@go build -o bin/gateway cmd/gateway/main.go
 
 run: build
-	./bin/gateway
+	@./bin/gateway
 
 test:
 	go test -v ./...
@@ -16,3 +16,6 @@ clean:
 
 proto:
 	protoc --go_out=. --go-grpc_out=. proto/*.proto
+
+docker-build:
+	docker build -f deployments/Dockerfile -t api-gateway:latest ..

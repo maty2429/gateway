@@ -2,18 +2,27 @@ package proxy
 
 import (
 	"context"
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
+	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
+	"apigateway/internal/config"
 	apierrors "apigateway/internal/errors"
 	"apigateway/internal/middleware"
+	"apigateway/internal/resilience"
 	"apigateway/proto/users"
+	authv1 "github.com/maty2429/contracts/gen/go/auth/v1"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -21,26 +30,46 @@ import (
 
 // GRPCProxy manages the gRPC client connections and translates HTTP/JSON to gRPC.
 type GRPCProxy struct {
-	connections map[string]*grpc.ClientConn
-	UsersClient users.UserServiceClient
+	connections   map[string]*grpc.ClientConn
+	UsersClient   users.UserServiceClient
+	AuthClient    authv1.AuthServiceClient
+	AdminClient   authv1.AdminServiceClient
+	HealthClients map[string]healthpb.HealthClient
+	authBreaker   *resilience.CircuitBreaker
 }
 
 // NewGRPCProxy creates a manager for gRPC upstream connections.
 func NewGRPCProxy(addresses map[string]string) (*GRPCProxy, error) {
+	upstreams := make(map[string]config.UpstreamConfig, len(addresses))
+	for name, address := range addresses {
+		upstreams[name] = config.UpstreamConfig{Protocol: "grpc", Address: address}
+	}
+	return NewGRPCProxyWithConfig(upstreams)
+}
+
+// NewGRPCProxyWithConfig configures plaintext or mutual-TLS connections per upstream.
+func NewGRPCProxyWithConfig(upstreams map[string]config.UpstreamConfig) (*GRPCProxy, error) {
 	connections := make(map[string]*grpc.ClientConn)
 
 	// Keepalive settings for maintaining healthy, long-lived multiplexed connections
 	kacp := keepalive.ClientParameters{
-		Time:                10 * time.Second, // Send pings every 10s if active
-		Timeout:             3 * time.Second,  // Wait 3s for ping response
-		PermitWithoutStream: true,             // Send pings even without active streams
+		Time:                5 * time.Minute,
+		Timeout:             10 * time.Second,
+		PermitWithoutStream: false,
 	}
 
-	for name, addr := range addresses {
+	for name, upstream := range upstreams {
+		if upstream.Protocol != "grpc" {
+			continue
+		}
+		transportCredentials, err := clientCredentials(upstream)
+		if err != nil {
+			return nil, fmt.Errorf("upstream %s credentials: %w", name, err)
+		}
 		// Establish connection with non-blocking, dial options
-		conn, err := grpc.Dial(
-			addr,
-			grpc.WithTransportCredentials(insecure.NewCredentials()),
+		conn, err := grpc.NewClient(
+			upstream.Address,
+			grpc.WithTransportCredentials(transportCredentials),
 			grpc.WithKeepaliveParams(kacp),
 		)
 		if err != nil {
@@ -58,10 +87,39 @@ func NewGRPCProxy(addresses map[string]string) (*GRPCProxy, error) {
 		usersClient = users.NewUserServiceClient(conn)
 	}
 
-	return &GRPCProxy{
-		connections: connections,
-		UsersClient: usersClient,
-	}, nil
+	proxy := &GRPCProxy{
+		connections:   connections,
+		UsersClient:   usersClient,
+		HealthClients: make(map[string]healthpb.HealthClient, len(connections)),
+		authBreaker:   resilience.NewCircuitBreaker(5, 2, 30*time.Second),
+	}
+	for name, conn := range connections {
+		proxy.HealthClients[name] = healthpb.NewHealthClient(conn)
+	}
+	if conn, exists := connections["auth"]; exists {
+		proxy.AuthClient = authv1.NewAuthServiceClient(conn)
+		proxy.AdminClient = authv1.NewAdminServiceClient(conn)
+	}
+	return proxy, nil
+}
+
+func clientCredentials(upstream config.UpstreamConfig) (credentials.TransportCredentials, error) {
+	if upstream.TLS == nil {
+		return insecure.NewCredentials(), nil
+	}
+	caPEM, err := os.ReadFile(upstream.TLS.CAFile)
+	if err != nil {
+		return nil, fmt.Errorf("read CA: %w", err)
+	}
+	pool := x509.NewCertPool()
+	if !pool.AppendCertsFromPEM(caPEM) {
+		return nil, fmt.Errorf("CA file contains no certificates")
+	}
+	cert, err := tls.LoadX509KeyPair(upstream.TLS.CertFile, upstream.TLS.KeyFile)
+	if err != nil {
+		return nil, fmt.Errorf("load client certificate: %w", err)
+	}
+	return credentials.NewTLS(&tls.Config{MinVersion: tls.VersionTLS13, RootCAs: pool, Certificates: []tls.Certificate{cert}, ServerName: upstream.TLS.ServerName}), nil
 }
 
 // Connections returns the map of active gRPC connections.
@@ -171,7 +229,7 @@ func (p *GRPCProxy) HandleGetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := PropagateMetadata(r.Context())
-	
+
 	req := &users.GetUserRequest{Id: id}
 	res, err := p.UsersClient.GetUser(ctx, req)
 	if err != nil {

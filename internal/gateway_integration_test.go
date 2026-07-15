@@ -2,13 +2,12 @@ package internal_test
 
 import (
 	"context"
-	"crypto/x509"
+	"crypto/rand"
+	"crypto/rsa"
 	"encoding/json"
-	"encoding/pem"
 	"errors"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -60,7 +59,7 @@ func TestGatewayIntegration(t *testing.T) {
 			http.Error(w, "forbidden: wrong user id", http.StatusForbidden)
 			return
 		}
-		
+
 		// Ensure request ID propagation
 		if r.Header.Get("X-Request-ID") == "" {
 			http.Error(w, "bad request: missing request id", http.StatusBadRequest)
@@ -73,11 +72,13 @@ func TestGatewayIntegration(t *testing.T) {
 	}))
 	defer httpUpstream.Close()
 
-	// 3. Load/Generate keys
-	pubKey, err := middleware.LoadOrGenerateKeys("../configs/jwt_public.pem", "../configs/jwt_private_dev.pem")
+	// 3. Generate an isolated test key. Runtime gateway code only consumes JWKS
+	// and never creates or stores auth signing keys.
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
-		t.Fatalf("failed to load/generate keys: %v", err)
+		t.Fatalf("failed to generate test key: %v", err)
 	}
+	pubKey := &privateKey.PublicKey
 
 	// 4. Build config programmatically pointing to mock servers
 	cfg := &config.Config{
@@ -136,7 +137,7 @@ func TestGatewayIntegration(t *testing.T) {
 		t.Fatalf("failed to create grpc proxy: %v", err)
 	}
 	defer grpcProxy.Close()
-	
+
 	// Inject the mock client
 	grpcProxy.UsersClient = &mockUserServiceClient{}
 
@@ -165,27 +166,14 @@ func TestGatewayIntegration(t *testing.T) {
 	ts := httptest.NewServer(gatewayHandler)
 	defer ts.Close()
 
-	// 6. Generate valid JWT token signed with development private key
-	privBytes, err := os.ReadFile("../configs/jwt_private_dev.pem")
-	if err != nil {
-		t.Fatalf("failed to read private key: %v", err)
-	}
-	block, _ := pem.Decode(privBytes)
-	if block == nil {
-		t.Fatal("failed to decode PEM private key")
-	}
-	privKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-	if err != nil {
-		t.Fatalf("failed to parse private key: %v", err)
-	}
-
+	// 6. Generate valid JWT token signed with the isolated test key.
 	validToken := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
 		"sub": "user_123",
 		"iss": "https://auth.miapp.com",
 		"aud": "api.miapp.com",
 		"exp": time.Now().Add(time.Hour).Unix(),
 	})
-	tokenString, err := validToken.SignedString(privKey)
+	tokenString, err := validToken.SignedString(privateKey)
 	if err != nil {
 		t.Fatalf("failed to sign token: %v", err)
 	}
@@ -223,7 +211,7 @@ func TestGatewayIntegration(t *testing.T) {
 		if body["id"] != "42" || body["name"] != "Matias King" {
 			t.Errorf("unexpected body structure: %+v", body)
 		}
-		
+
 		// Ensure standard security headers are present
 		if resp.Header.Get("X-Frame-Options") != "DENY" {
 			t.Error("missing security headers")
@@ -243,7 +231,7 @@ func TestGatewayIntegration(t *testing.T) {
 		if resp.StatusCode != http.StatusNotFound {
 			t.Errorf("expected 404 Not Found, got %d", resp.StatusCode)
 		}
-		
+
 		var prob map[string]interface{}
 		_ = json.NewDecoder(resp.Body).Decode(&prob)
 		if prob["title"] != "NotFound" {

@@ -15,11 +15,12 @@ import (
 	"apigateway/internal/config"
 	"apigateway/internal/health"
 	"apigateway/internal/middleware"
+	"apigateway/internal/observability"
 	"apigateway/internal/proxy"
 	"apigateway/internal/router"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"google.golang.org/grpc/connectivity"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func main() {
@@ -27,11 +28,8 @@ func main() {
 	configPath := flag.String("config", "configs/gateway.yaml", "Path to configuration file")
 	flag.Parse()
 
-	// Configure structured JSON logging
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
-		Level: slog.LevelInfo,
-	}))
-	slog.SetDefault(logger)
+	// Human-friendly logs locally; structured JSON remains enabled in production.
+	slog.SetDefault(observability.NewLogger("gateway", "development"))
 
 	slog.Info("Starting API Gateway...")
 
@@ -41,29 +39,37 @@ func main() {
 		slog.Error("Failed to load configuration", "error", err)
 		os.Exit(1)
 	}
+	slog.SetDefault(observability.NewLogger("gateway", cfg.Server.Environment))
 	slog.Info("Configuration loaded successfully", "addr", cfg.Server.Addr)
 
-	// 2. Initialize JWT auth keys and middleware
-	jwtPubKey, err := middleware.LoadOrGenerateKeys("configs/jwt_public.pem", "configs/jwt_private_dev.pem")
-	if err != nil {
-		slog.Error("Failed to load or generate JWT keys", "error", err)
-		os.Exit(1)
-	}
-	authMW := middleware.NewAuthMiddleware(jwtPubKey, cfg.Auth.JWTIssuer, cfg.Auth.JWTAudience)
-
-	// 3. Connect to gRPC upstreams
-	grpcUpstreams := make(map[string]string)
-	for name, uCfg := range cfg.Upstreams {
-		if uCfg.Protocol == "grpc" {
-			grpcUpstreams[name] = uCfg.Address
-		}
-	}
-	grpcProxy, err := proxy.NewGRPCProxy(grpcUpstreams)
+	// 2. Connect to gRPC upstreams, including auth.
+	grpcProxy, err := proxy.NewGRPCProxyWithConfig(cfg.Upstreams)
 	if err != nil {
 		slog.Error("Failed to initialize gRPC upstreams", "error", err)
 		os.Exit(1)
 	}
 	defer grpcProxy.Close()
+
+	// 3. Bootstrap JWT validation from auth's JWKS. The gateway never creates
+	// or receives auth's private signing key.
+	jwksCtx, jwksCancel := context.WithTimeout(context.Background(), cfg.Upstreams["auth"].Timeout.Duration())
+	jwks, err := grpcProxy.FetchJWKS(jwksCtx)
+	jwksCancel()
+	if err != nil {
+		slog.Error("Failed to load JWKS from auth", "error", err)
+		os.Exit(1)
+	}
+	audiences := cfg.Auth.JWTAudiences
+	if len(audiences) == 0 && cfg.Auth.JWTAudience != "" {
+		audiences = []string{cfg.Auth.JWTAudience}
+	}
+	authMW, err := middleware.NewAuthMiddlewareFromJWKS(jwks, cfg.Auth.JWTIssuer, audiences)
+	if err != nil {
+		slog.Error("Auth returned an invalid JWKS", "error", err)
+		os.Exit(1)
+	}
+	jwksStop := startJWKSRefresh(grpcProxy, authMW, cfg.Auth.JWKSRefresh.Duration())
+	defer close(jwksStop)
 
 	// 4. Initialize HTTP reverse proxies
 	httpProxies := make(map[string]*proxy.HTTPProxy)
@@ -84,14 +90,17 @@ func main() {
 		return nil
 	})
 
-	// Add dynamic readiness checks mapping state of gRPC upstreams
-	for name, conn := range grpcProxy.Connections() {
-		connCopy := conn
+	// Add dynamic readiness checks using the standard gRPC health protocol.
+	for name, client := range grpcProxy.HealthClients {
+		clientCopy := client
 		nameCopy := name
 		healthHandler.RegisterReadinessCheck("grpc_"+nameCopy, func(ctx context.Context) error {
-			state := connCopy.GetState()
-			if state == connectivity.TransientFailure || state == connectivity.Shutdown {
-				return errors.New("upstream connection status: " + state.String())
+			response, err := clientCopy.Check(ctx, &healthpb.HealthCheckRequest{})
+			if err != nil {
+				return err
+			}
+			if response.GetStatus() != healthpb.HealthCheckResponse_SERVING {
+				return errors.New("upstream is not serving")
 			}
 			return nil
 		})
@@ -111,7 +120,7 @@ func main() {
 		middleware.Metrics,
 		middleware.Logging,
 		middleware.SecurityHeaders,
-		middleware.CORS,
+		middleware.CORSWithOrigins(cfg.CORS.AllowedOrigins),
 	)
 
 	// Configure HTTP server
@@ -199,4 +208,33 @@ func main() {
 
 		slog.Info("API Gateway shutdown complete")
 	}
+}
+
+func startJWKSRefresh(grpcProxy *proxy.GRPCProxy, authMW *middleware.AuthMiddleware, interval time.Duration) chan struct{} {
+	stop := make(chan struct{})
+	if interval <= 0 {
+		interval = 5 * time.Minute
+	}
+	go func() {
+		ticker := time.NewTicker(interval)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ticker.C:
+				ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+				raw, err := grpcProxy.FetchJWKS(ctx)
+				cancel()
+				if err != nil {
+					slog.Warn("JWKS refresh failed; keeping last valid key set", "error", err)
+					continue
+				}
+				if err := authMW.UpdateJWKS(raw); err != nil {
+					slog.Warn("Auth returned invalid JWKS; keeping last valid key set", "error", err)
+				}
+			case <-stop:
+				return
+			}
+		}
+	}()
+	return stop
 }
